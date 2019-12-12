@@ -1,12 +1,3 @@
-/*
-  Example for receiving
-  
-  https://github.com/sui77/rc-switch/
-  
-  If you want to visualize a telegram copy the raw data and 
-  paste it into http://test.sui.li/oszi/
-*/
-
 #include <RCSwitch.h>
 
 RCSwitch mySwitch = RCSwitch();
@@ -14,7 +5,7 @@ RCSwitch mySwitch = RCSwitch();
 void setup() {
   Serial.begin(9600);
   mySwitch.enableReceive(0);  // Receiver on interrupt 0 => that is pin #2
-  mySwitch.enableTransmit(3);  // An Pin 3
+  mySwitch.enableTransmit(5);  // An Pin 5
 
   mySwitch.setProtocol(1);
   mySwitch.setPulseLength(180);
@@ -24,7 +15,7 @@ void setup() {
 }
 
 void loop() {
-  char data = '3';
+  char data;
   if (mySwitch.available()) 
   {
     output(mySwitch.getReceivedValue(), mySwitch.getReceivedBitlength(), mySwitch.getReceivedDelay(), mySwitch.getReceivedRawdata(),mySwitch.getReceivedProtocol());
@@ -34,7 +25,7 @@ void loop() {
   {
     data = Serial.read();
   }
-  if (data == '00000001') // Alle Aktoren einschalten
+  if (data == '1') // Alle Aktoren einschalten
   {
     mySwitch.sendTriState("0F00FFFF0101");
     delay(1000);
@@ -46,7 +37,7 @@ void loop() {
     delay(1000);
     digitalWrite(8, HIGH);
   }
-  else if (data == '00000000') // Alle Aktoren ausschalten
+  else if (data == '0') // Alle Aktoren ausschalten
   {
     mySwitch.sendTriState("0F00FFFF0110");
     delay(1000);
@@ -58,43 +49,43 @@ void loop() {
     delay(1000);
     digitalWrite(8, LOW);
   }
-  else if (data == '00000011') // Funk 1 Ein
+  else if (data == '3') // Funk 1 Ein
   {
     mySwitch.sendTriState("0F00FFFF0101"); 
   }
-  else if (data == '00000010') // Funk 1 Aus
+  else if (data == '2') // Funk 1 Aus
   {
     mySwitch.sendTriState("0F00FFFF0110"); 
   }
-  else if (data == '00000101') // Funk 2 Ein
+  else if (data == '5') // Funk 2 Ein
   {
     mySwitch.sendTriState("0F00FFFF1001"); 
   }
-  else if (data == '00000100') // Funk 2 Aus
+  else if (data == '4') // Funk 2 Aus
   {
     mySwitch.sendTriState("0F00FFFF1010"); 
   }
-  else if (data == '00000111') // Funk 3 Ein
+  else if (data == '7') // Funk 3 Ein
   {
     mySwitch.sendTriState("0F00FFF10001"); 
   }
-  else if (data == '00000110') // Funk 3 Aus
+  else if (data == '6') // Funk 3 Aus
   {
     mySwitch.sendTriState("0F00FFF10010"); 
   }
-  else if (data == '00001001') // Relais 1 Ein
+  else if (data == '9') // Relais 1 Ein
   {
     digitalWrite(7, HIGH);
   }
-  else if (data == '00001000') // Relais 1 Aus
+  else if (data == '8') // Relais 1 Aus
   {
     digitalWrite(7, HIGH);
   }
-  else if (data == '00001011') // Relais 2 Ein
+  else if (data == 'B') // Relais 2 Ein
   {
     digitalWrite(8, HIGH);
   }
-  else if (data == '00001010') // Relais 2 Aus
+  else if (data == 'A') // Relais 2 Aus
   {
     digitalWrite(8, HIGH);
   }
